@@ -11,6 +11,8 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -26,4 +28,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.google.guava:guava:19.0'
+    compile 'com.android.support:multidex:1.0.0'
 }
