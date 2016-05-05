@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MethodCountExample.iml" filepath="$PROJECT_DIR$/MethodCountExample.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shrink_lib/shrink_lib.iml" filepath="$PROJECT_DIR$/shrink_lib/shrink_lib.iml" />
     </modules>
   </component>
 </project>
