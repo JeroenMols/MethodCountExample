@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':shrink_lib'

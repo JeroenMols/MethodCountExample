@@ -1,0 +1,64 @@
+apply plugin: 'base'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.sf.proguard:proguard-gradle:4.11'
+    }
+}
+
+configurations {
+    injar
+    libjar
+}
+
+String getClassesJar() {
+    def javaHome = System.properties.'java.home'
+    def candidates = ["$javaHome/lib/rt.jar", "$javaHome/bin/rt.jar", "$javaHome/../Classes/classes.jar"]
+    def found
+
+    candidates.find {
+        if (new File(it).exists()) {
+            found = it
+            return true
+        }
+        return false;
+    }
+
+    if (!found) {
+        throw new GradleException('unable to determine java runtime classes it is none of the expected: ' + candidates)
+    }
+
+    found
+}
+
+def libVersion = '18.0'
+def libArtifactId = 'guava'
+def libGroupId = 'com.google.guava'
+def classesJar = files(getClassesJar())
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    injar "${libGroupId}:${libArtifactId}:${libVersion}"
+    libjar 'com.google.code.findbugs:jsr305:3.0.0'
+    libjar classesJar
+}
+
+/**
+ * Run proguard to shrink guava to only include the stuff we specify and its dependencies.
+ */
+task shrinkLibrary(type: proguard.gradle.ProGuardTask) {
+    injars configurations.injar.files
+    libraryjars configurations.libjar.files
+    outjars file("build/libs/${libArtifactId}_${libVersion}_shrinked.jar")
+    configuration "shrink.proguard"
+}
+
+artifacts {
+    'default'(file: shrinkLibrary.outputs.files.singleFile, builtBy: shrinkLibrary)
+}
